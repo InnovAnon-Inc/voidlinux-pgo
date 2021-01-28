@@ -1,0 +1,37 @@
+#! /bin/bash
+set -eu
+exec 0<&-               # close stdin
+#exec 2>&1               # redirect stderr to stdout
+if [ -z "${TEST:-}" ] ; then
+  set +vx
+  exec 1>/dev/null      # redirect stdout to nowhere
+  exec 2>/dev/null      # redirect stderr to nowhere
+else
+  set -vx               # enable tracing instead
+fi
+
+case "$(whoami)" in
+  #root) CONF=/etc/tor/torrc.root ;;
+  #lfs)  CONF=/etc/tor/torrc      ;;
+  *)    CONF=/etc/tor/torrc      ;;
+esac
+
+command -v tor
+command -v support
+
+tor -f "$CONF" --verify-config
+
+nohup tor -f "$CONF" & T="$!"
+# shellcheck disable=SC2064
+trap "kill $T ; wait $T" 0
+sleep 11
+kill -0   "$T"
+( renice -n -20 "$$" 2> /dev/null || :
+  nohup /usr/local/bin/support & S="$!"
+  # shellcheck disable=SC2064
+  trap "kill $S ; wait $S" 0
+  sleep 7
+  kill -0   "$S"
+  wait      "$S" )
+wait      "$T"
+
