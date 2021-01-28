@@ -1,5 +1,5 @@
 FROM innovanon/builder as bootstrap
-RUN sleep 91                                                                                                 \
+RUN sleep 91                                                                                            \
  && curl -L --proxy $SOCKS_PROXY                     -o void-x86_64-ROOTFS-20191109.tar.xz              \
        https://alpha.de.repo.voidlinux.org/live/current/void-x86_64-ROOTFS-20191109.tar.xz              \
  && tar xf                                              void-x86_64-ROOTFS-20191109.tar.xz -C /tmp/
