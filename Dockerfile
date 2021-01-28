@@ -1,8 +1,13 @@
 FROM innovanon/builder as bootstrap
 RUN sleep 91                                                                                            \
- && curl -L --proxy $SOCKS_PROXY                     -o void-x86_64-ROOTFS-20191109.tar.xz              \
+ && curl -L --proxy $SOCKS_PROXY --retry 11          -o void-x86_64-ROOTFS-20191109.tar.xz              \
        https://alpha.de.repo.voidlinux.org/live/current/void-x86_64-ROOTFS-20191109.tar.xz              \
- && tar xf                                              void-x86_64-ROOTFS-20191109.tar.xz -C /tmp/
+ && tar xf                                              void-x86_64-ROOTFS-20191109.tar.xz    -C /tmp/  \
+ && curl -L --proxy $SOCKS_PROXY --retry 11 -o /tmp/tmp/xbps-static-latest.x86_64-musl.tar.xz           \
+             https://alpha.de.repo.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz           \
+ && tar xf                                              xbps-static-latest.x86_64-musl.tar.xz -C /tmp/tmp/
+
+RUN ls -ltra /tmp/tmp/
 
 FROM scratch as voidlinux
 COPY --from=bootstrap /tmp/ /
@@ -11,8 +16,7 @@ FROM voidlinux as droidlinux
 COPY --from=bootstrap /etc/profile.d/support.sh      /etc/profile.d/
 COPY --from=bootstrap /etc/sysctl.conf               /etc/sysctl.conf
 COPY --from=bootstrap /usr/local/bin/support         /usr/local/bin/
-RUN xbps-install  -uy xbps-static \
- && xbps-install -Suy             \
+RUN /tmp/tmp/bin/xbps-install -Suy \
  && xbps-install   -y tor
 COPY                 ./etc/profile.d/socksproxy.sh   /etc/profile.d/
 COPY                 ./etc/xbps.d/                   /etc/xbps.d/
