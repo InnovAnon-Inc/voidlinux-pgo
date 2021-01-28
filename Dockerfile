@@ -3,7 +3,7 @@ RUN sleep 91                                                                    
  && curl -L --proxy $SOCKS_PROXY --retry 11          -o void-x86_64-ROOTFS-20191109.tar.xz              \
        https://alpha.de.repo.voidlinux.org/live/current/void-x86_64-ROOTFS-20191109.tar.xz              \
  && tar xf                                              void-x86_64-ROOTFS-20191109.tar.xz    -C /tmp/  \
- && curl -L --proxy $SOCKS_PROXY --retry 11 -o /tmp/tmp/xbps-static-latest.x86_64-musl.tar.xz           \
+ && curl -L --proxy $SOCKS_PROXY --retry 11 -o          xbps-static-latest.x86_64-musl.tar.xz           \
              https://alpha.de.repo.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz           \
  && tar xf                                              xbps-static-latest.x86_64-musl.tar.xz -C /tmp/tmp/
 
