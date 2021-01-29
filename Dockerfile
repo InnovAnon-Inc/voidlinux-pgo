@@ -16,7 +16,7 @@ FROM voidlinux as droidlinux
 COPY --from=bootstrap /etc/profile.d/support.sh      /etc/profile.d/
 COPY --from=bootstrap /etc/sysctl.conf               /etc/sysctl.conf
 COPY --from=bootstrap /usr/local/bin/support         /usr/local/bin/
-RUN /tmp/tmp/usr/bin/xbps-install -Suy \
+RUN /tmp/usr/bin/xbps-install -Suy \
  && xbps-install   -y tor
 COPY                 ./etc/profile.d/socksproxy.sh   /etc/profile.d/
 COPY                 ./etc/xbps.d/                   /etc/xbps.d/
