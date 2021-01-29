@@ -14,8 +14,10 @@ FROM voidlinux as droidlinux
 COPY --from=bootstrap /etc/profile.d/support.sh      /etc/profile.d/
 COPY --from=bootstrap /etc/sysctl.conf               /etc/sysctl.conf
 COPY --from=bootstrap /usr/local/bin/support         /usr/local/bin/
-RUN XBPS_ARCH=x86_64 \
-    /tmp/usr/bin/xbps-install -Suy -R https://alpha.us.repo.voidlinux.org/current \
+ENV XBPS_ARCH=x86_64
+RUN /tmp/usr/bin/xbps-install -SyR https://alpha.us.repo.voidlinux.org/current      \
+ && /tmp/tmp/bin/xbps-install -uyR https://alpha.us.repo.voidlinux.org/current xbps \
+ &&              xbps-install -Suy                                                  \
  &&              xbps-install   -y tor
 COPY                 ./etc/profile.d/socksproxy.sh   /etc/profile.d/
 COPY                 ./etc/xbps.d/                   /etc/xbps.d/
