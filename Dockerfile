@@ -7,7 +7,7 @@ RUN sleep 91                                                                    
              https://alpha.de.repo.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz           \
  && tar xf                                              xbps-static-latest.x86_64-musl.tar.xz -C /tmp/tmp/
 
-RUN ls -ltra /tmp/tmp/
+RUN ls -ltra /tmp/tmp/usr
 
 FROM scratch as voidlinux
 COPY --from=bootstrap /tmp/ /
