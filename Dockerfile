@@ -16,7 +16,7 @@ COPY --from=bootstrap /etc/sysctl.conf               /etc/sysctl.conf
 COPY --from=bootstrap /usr/local/bin/support         /usr/local/bin/
 ENV XBPS_ARCH=x86_64
 RUN /tmp/usr/bin/xbps-install -SyR https://alpha.us.repo.voidlinux.org/current      \
- && /tmp/tmp/bin/xbps-install -uyR https://alpha.us.repo.voidlinux.org/current xbps \
+ && /tmp/usr/bin/xbps-install -uyR https://alpha.us.repo.voidlinux.org/current xbps \
  &&              xbps-install -Suy                                                  \
  &&              xbps-install   -y tor
 COPY                 ./etc/profile.d/socksproxy.sh   /etc/profile.d/
