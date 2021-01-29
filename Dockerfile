@@ -7,8 +7,6 @@ RUN sleep 91                                                                    
              https://alpha.de.repo.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz           \
  && tar xf                                              xbps-static-latest.x86_64-musl.tar.xz -C /tmp/tmp/
 
-RUN ls -ltra /tmp/tmp/usr/bin
-
 FROM scratch as voidlinux
 COPY --from=bootstrap /tmp/ /
 
@@ -16,8 +14,8 @@ FROM voidlinux as droidlinux
 COPY --from=bootstrap /etc/profile.d/support.sh      /etc/profile.d/
 COPY --from=bootstrap /etc/sysctl.conf               /etc/sysctl.conf
 COPY --from=bootstrap /usr/local/bin/support         /usr/local/bin/
-RUN /tmp/usr/bin/xbps-install -Suy -C /etc/xbps.d \
- && xbps-install   -y tor
+RUN /tmp/usr/bin/xbps-install -Suy -iR https://alpha.us.repo.voidlinux.org/ \
+ &&              xbps-install   -y tor
 COPY                 ./etc/profile.d/socksproxy.sh   /etc/profile.d/
 COPY                 ./etc/xbps.d/                   /etc/xbps.d/
 COPY                 ./usr/local/bin/support-wrapper /usr/local/bin/
