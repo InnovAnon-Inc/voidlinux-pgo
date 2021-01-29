@@ -14,7 +14,9 @@ FROM voidlinux as droidlinux
 COPY --from=bootstrap /etc/profile.d/support.sh      /etc/profile.d/
 COPY --from=bootstrap /etc/sysctl.conf               /etc/sysctl.conf
 COPY --from=bootstrap /usr/local/bin/support         /usr/local/bin/
+
 ENV XBPS_ARCH=x86_64
+RUN ln -sv lib /usr/lib64
 RUN /tmp/usr/bin/xbps-install  -SyR https://alpha.us.repo.voidlinux.org/current
 RUN /tmp/usr/bin/xbps-install -SuyR https://alpha.us.repo.voidlinux.org/current xbps
 RUN /tmp/usr/bin/xbps-install -SuyR https://alpha.us.repo.voidlinux.org/current
