@@ -33,18 +33,18 @@ RUN tor --verify-config \
 
 # TODO [CircleCI] ls: cannot access '.': Operation not permitted
 #                 configure: error: working directory cannot be determined
-#FROM scratch as squash
-#COPY --from=droidlinux / /
-#RUN chown -R tor:tor /var/lib/tor
-#SHELL ["/usr/bin/bash", "-l", "-c"]
-#ARG TEST
-#
-#FROM squash as test
-#ARG TEST
-#RUN tor --verify-config \
-# && sleep 127           \
-# && xbps-install -S     \
-# && exec true || exec false
-#
-#FROM squash as final
-#
+FROM scratch as squash
+COPY --from=droidlinux / /
+RUN chown -R tor:tor /var/lib/tor
+SHELL ["/usr/bin/bash", "-l", "-c"]
+ARG TEST
+
+FROM squash as test
+ARG TEST
+RUN tor --verify-config \
+ && sleep 127           \
+ && xbps-install -S     \
+ && exec true || exec false
+
+FROM squash as final
+
