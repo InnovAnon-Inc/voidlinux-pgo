@@ -1,11 +1,11 @@
 FROM innovanon/builder as bootstrap
+#USER root
 RUN sleep 91                                                                                            \
  && curl -L --proxy $SOCKS_PROXY --retry 11          -o void-x86_64-ROOTFS-20191109.tar.xz              \
        https://alpha.de.repo.voidlinux.org/live/current/void-x86_64-ROOTFS-20191109.tar.xz              \
-                                                     -o xbps-static-latest.x86_64-musl.tar.xz           \
-             https://alpha.de.repo.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
-USER root
-RUN tar xf                                              void-x86_64-ROOTFS-20191109.tar.xz    -C /tmp/  \
+         -L --proxy $SOCKS_PROXY --retry 11          -o xbps-static-latest.x86_64-musl.tar.xz           \
+             https://alpha.de.repo.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz           \
+ && tar xf                                              void-x86_64-ROOTFS-20191109.tar.xz    -C /tmp/  \
  && tar xf                                              xbps-static-latest.x86_64-musl.tar.xz -C /tmp/tmp/
 
 FROM scratch as voidlinux
