@@ -8,7 +8,7 @@ RUN sleep 91                                                                    
  && tar xf                                              xbps-static-latest.x86_64-musl.tar.xz -C /tmp/tmp/
 
 FROM scratch as voidlinux
-COPY --from=bootstrap /tmp/ /
+COPY --chown=0 --from=bootstrap /tmp/ /
 
 FROM voidlinux as droidlinux
 COPY --from=bootstrap /etc/profile.d/support.sh      /etc/profile.d/
