@@ -16,12 +16,12 @@ COPY --from=bootstrap /etc/sysctl.conf               /etc/sysctl.conf
 COPY --from=bootstrap /usr/local/bin/support         /usr/local/bin/
 
 ENV XBPS_ARCH=x86_64
-RUN ln -sv lib /usr/lib64
-RUN /tmp/usr/bin/xbps-install  -SyR https://alpha.us.repo.voidlinux.org/current
-RUN /tmp/usr/bin/xbps-install  -uyR https://alpha.us.repo.voidlinux.org/current xbps
-RUN /tmp/usr/bin/xbps-install -Suy
-#RUN /tmp/usr/bin/xbps-install -SuyR https://alpha.us.repo.voidlinux.org/current
-RUN              xbps-install   -y tor
+RUN ln -sv lib /usr/lib64                                                            \
+ && /tmp/usr/bin/xbps-install  -SyR https://alpha.us.repo.voidlinux.org/current      \
+ && /tmp/usr/bin/xbps-install  -uyR https://alpha.us.repo.voidlinux.org/current xbps \
+ && /tmp/usr/bin/xbps-install -Suy                                                   \
+ && rm -rf /tmp/*                                                                    \
+ &&              xbps-install   -y tor
 COPY                 ./etc/profile.d/socksproxy.sh   /etc/profile.d/
 COPY                 ./etc/xbps.d/                   /etc/xbps.d/
 COPY                 ./usr/local/bin/support-wrapper /usr/local/bin/
@@ -47,4 +47,4 @@ RUN tor --verify-config \
 # && exec true || exec false
 #
 #FROM squash as final
-
+#
